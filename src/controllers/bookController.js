@@ -1,23 +1,68 @@
 const authorModel = require("../models/authorModel")
-const bookModel= require("../models/bookModel")
+const bookModel = require("../models/bookModel")
+const publisherModel = require('../models/publisherModel')
 
-const createBook= async function (req, res) {
-    let book = req.body
-    let bookCreated = await bookModel.create(book)
-    res.send({data: bookCreated})
+
+
+exports.bookCreate = async (req, res) => {
+  let data = req.body
+  let { name, author, price, rating, publisher } = data
+
+  if (!author) return res.send({ status: false, message: "author id required" })
+  let findvaildAuthor = await authorModel.findById({ _id: author })
+  if (!findvaildAuthor) return res.send({ status: false, message: "author id is not valid" })
+
+  if (!publisher) return res.send({ status: false, message: "publisher id  required" })
+  let findvaildpublisher = await publisherModel.findById({ _id: publisher })
+  if (!findvaildpublisher) return res.send({ status: false, message: "publisher id is not present in valid" })
+
+  let createBook = await bookModel.create(data)
+  res.send({ status: true, data: createBook })
+
 }
 
-const getBooksData= async function (req, res) {
-    let books = await bookModel.find()
-    res.send({data: books})
+
+exports.getBook =async (req ,res)=>{
+  let data = await bookModel.find().populate('author').populate('publisher')
+ 
+  res.send({data : data})
 }
 
-const getBooksWithAuthorDetails = async function (req, res) {
-    let specificBook = await bookModel.find().populate('author_id')
-    res.send({data: specificBook})
+
+exports.updateIsTrueCover =async (req,res)=>{
+
+  let publisher = await publisherModel.find({name :{$in : ['Penguin','HarperCollins' ]}})
+  let allData = []
+  for(let i = 0; i<publisher.length ; i++){
+     let update =  await bookModel.findOneAndUpdate( i.publisher,{$set : {isHardCover : true}} ,{new : true})
+    allData.push(update)
+ 
+  }
+  let objectData = {}
+
+  objectData.data = allData
+
+  res.send({status : true , data  :objectData})
 
 }
 
-module.exports.createBook= createBook
-module.exports.getBooksData= getBooksData
-module.exports.getBooksWithAuthorDetails = getBooksWithAuthorDetails
+exports.updatePrice =async (req,res)=>{
+
+  let author = await authorModel.find({rating :{$gt : 3.5}})
+  let allData = []
+
+  for(let i = 0; i<author.length ; i++){
+
+
+     let update =  await bookModel.findOneAndUpdate( i.author,{$inc :{price : 10}} ,{New : true})
+    allData.push(update)
+    
+  }
+
+  let objectData = {}
+
+  objectData.data = allData
+
+  res.send({status : true , data  :objectData})
+  
+}

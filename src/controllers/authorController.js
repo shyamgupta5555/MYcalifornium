@@ -1,15 +1,17 @@
-const AuthorModel= require("../models/authorModel")
+const authorModel = require('../models/authorModel')
+const mongoose = require("mongoose")
 
-const createAuthor= async function (req, res) {
-    let author = req.body
-    let authorCreated = await AuthorModel.create(author)
-    res.send({data: authorCreated})
+exports.createAuthor = async (req ,res)=>{
+    let data  =  req.body 
+    let createAuthor = await authorModel.create(data)
+    res.send({ status : true ,message : "successful creation" , data : createAuthor})
 }
 
-const getAuthorsData= async function (req, res) {
-    let authors = await AuthorModel.find()
-    res.send({data: authors})
-}
 
-module.exports.createAuthor= createAuthor
-module.exports.getAuthorsData= getAuthorsData
+// exports.getAuthor = async (req ,res)=>{
+//     let query = req.query
+//    let data  = await authorModel.find()
+//    res.send({ status : true ,message : "all data" , data : data})
+// }
+
+
