@@ -77,3 +77,42 @@ For free app user, we dont check user's balance and create the order with 0 amou
 
 
 
+
+
+Assessment Topic List 
+Post API - 
+Mongodb Day1
+1.What is a database
+2. Mongodb as a Database
+3. Mongoose Schema
+ 
+MongoDB Day2:
+1. What is Regex
+2. Intro to async await
+3. Various MongoDB queries - esp. find findById count select sort limit skip update
+4. Filter conditions inside find :-
+$or: e. find( { $or : [ {cond1 } , {cond2} , {cond3} ] } )
+$in : [0,10,20, 30, 40, 50]
+$eq
+$ne
+$gt:
+$lt:
+$gte:
+$lte:
+$in:
+$nin:
+
+Mongo Day3:
+● mixed type in mongoose schema
+● Date and moment
+● findOne vs find
+● CRUD in mongo
+● esp updateMany and findOneAndUpdate
+● new flag in update operations
+● upsert flag in update operations
+● isDeleted key in mongoose schema
+● Assignment ( we have not discussed ref and populate yet)
+
+Reference & populate 
+
+Middleware
